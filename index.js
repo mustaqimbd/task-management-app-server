@@ -52,7 +52,25 @@ async function run() {
             const result = await taskDB.updateOne(filter, updateDoc)
             res.send(result)
         })
-       
+        app.patch('/update-task/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+            console.log(req.body);
+            const filter = { _id: new ObjectId(id) };
+            const updateDoc = {
+                $set: {
+                    ...req.body,
+                },
+            };
+            const result = await taskDB.updateOne(filter, updateDoc)
+            res.send(result)
+        })
+        app.delete('/tasks/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await taskDB.deleteOne(query)
+            res.send(result)
+        })
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
